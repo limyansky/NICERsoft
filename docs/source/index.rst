@@ -6,6 +6,12 @@
 Work in Progress Documentation for NICERsoft
 ============================================
 
+Python Modules
+^^^^^^^^^^^^^^
+
+Scripts
+^^^^^^^
+
 .. toctree::
    :maxdepth: 2
    :caption: Contents:
