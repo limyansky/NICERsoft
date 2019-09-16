@@ -1,7 +1,7 @@
-gpsvalid
+nicerql
 ========
 
 Description
 ^^^^^^^^^^^
 
-Empty
+Plot the NICER data nicely.

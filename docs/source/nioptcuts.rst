@@ -1,7 +1,7 @@
-gpsvalid
+nioptcuts
 ========
 
 Description
 ^^^^^^^^^^^
 
-Empty
+Read event file with phase and optimize cuts.

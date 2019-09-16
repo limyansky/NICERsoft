@@ -1,7 +1,7 @@
-gpsvalid
+ni_Htest_sortgti
 ========
 
 Description
 ^^^^^^^^^^^
 
-Empty
+Read one or more event files to sort GTI by background rate and evaluate H-test.
