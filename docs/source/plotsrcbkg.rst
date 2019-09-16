@@ -1,7 +1,7 @@
-gpsvalid
-========
+plotsrcbkg
+==========
 
 Description
 ^^^^^^^^^^^
 
-Empty
+Plot source and background spectra.

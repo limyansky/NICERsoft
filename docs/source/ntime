@@ -1,7 +1,0 @@
-gpsvalid
-========
-
-Description
-^^^^^^^^^^^
-
-Empty

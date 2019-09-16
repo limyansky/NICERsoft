@@ -1,7 +1,7 @@
-gpsvalid
+quickmap
 ========
 
 Description
 ^^^^^^^^^^^
 
-Empty
+Plot points on a map, filtering by tot.gti

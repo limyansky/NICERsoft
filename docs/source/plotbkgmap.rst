@@ -1,7 +1,7 @@
-gpsvalid
-========
+plotbkgmap
+==========
 
 Description
 ^^^^^^^^^^^
 
-Empty
+Plot background info on a map.

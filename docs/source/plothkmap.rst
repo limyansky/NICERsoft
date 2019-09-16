@@ -1,7 +1,7 @@
-gpsvalid
-========
+plothkmap
+=========
 
 Description
 ^^^^^^^^^^^
 
-Empty
+Plot HKP data on map.
