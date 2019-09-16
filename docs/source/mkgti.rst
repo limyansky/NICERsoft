@@ -1,7 +1,7 @@
-bkgpipe module
-==============
+mkgti module
+============
 
-.. automodule:: bkgpipe
+.. automodule:: mkgti
     :members:
     :undoc-members:
     :show-inheritance:

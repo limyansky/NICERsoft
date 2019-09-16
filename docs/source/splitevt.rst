@@ -1,7 +1,7 @@
-bkgpipe module
-==============
+splitevt module
+===============
 
-.. automodule:: bkgpipe
+.. automodule:: splitevt
     :members:
     :undoc-members:
     :show-inheritance:

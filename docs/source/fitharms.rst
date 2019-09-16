@@ -1,7 +1,7 @@
-bkgpipe module
-==============
+fitharms module
+===============
 
-.. automodule:: bkgpipe
+.. automodule:: fitharms
     :members:
     :undoc-members:
     :show-inheritance:

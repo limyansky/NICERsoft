@@ -1,7 +1,7 @@
-bkgpipe module
-==============
+issorb module
+=============
 
-.. automodule:: bkgpipe
+.. automodule:: issorb
     :members:
     :undoc-members:
     :show-inheritance:

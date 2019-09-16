@@ -1,4 +1,7 @@
-add_kp
-======
+add\_kp module
+==============
 
-Here is some documentation on add_kp.py
+.. automodule:: add_kp
+    :members:
+    :undoc-members:
+    :show-inheritance:

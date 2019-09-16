@@ -1,7 +1,7 @@
-bkgpipe module
-==============
+gpsvalid module
+===============
 
-.. automodule:: bkgpipe
+.. automodule:: gpsvalid
     :members:
     :undoc-members:
     :show-inheritance:

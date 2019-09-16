@@ -1,7 +1,7 @@
-InteractiveLC module
+fix\_template module
 ====================
 
-.. automodule:: InteractiveLC
+.. automodule:: fix_template
     :members:
     :undoc-members:
     :show-inheritance:

@@ -1,7 +1,7 @@
-bkgpipe module
+calcrms module
 ==============
 
-.. automodule:: bkgpipe
+.. automodule:: calcrms
     :members:
     :undoc-members:
     :show-inheritance:

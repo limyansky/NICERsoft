@@ -1,7 +1,7 @@
-bkgpipe module
+nicerql module
 ==============
 
-.. automodule:: bkgpipe
+.. automodule:: nicerql
     :members:
     :undoc-members:
     :show-inheritance:

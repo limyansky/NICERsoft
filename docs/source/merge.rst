@@ -1,7 +1,7 @@
-bkgpipe module
-==============
+merge module
+============
 
-.. automodule:: bkgpipe
+.. automodule:: merge
     :members:
     :undoc-members:
     :show-inheritance:

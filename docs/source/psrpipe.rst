@@ -1,7 +1,7 @@
-bkgpipe module
+psrpipe module
 ==============
 
-.. automodule:: bkgpipe
+.. automodule:: psrpipe
     :members:
     :undoc-members:
     :show-inheritance:

@@ -1,7 +1,7 @@
-bkgpipe module
+cr\_cut module
 ==============
 
-.. automodule:: bkgpipe
+.. automodule:: cr_cut
     :members:
     :undoc-members:
     :show-inheritance:

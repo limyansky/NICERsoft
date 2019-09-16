@@ -1,7 +1,7 @@
-bkgpipe module
-==============
+quickmap module
+===============
 
-.. automodule:: bkgpipe
+.. automodule:: quickmap
     :members:
     :undoc-members:
     :show-inheritance:
