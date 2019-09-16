@@ -16,6 +16,10 @@ Scripts
    :maxdepth: 2
    :caption: Contents:
 
+   InteractiveLC
+   add_kp
+   bkgpipe
+
 
 
 Indices and tables
