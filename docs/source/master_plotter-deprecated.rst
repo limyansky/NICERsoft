@@ -1,7 +1,7 @@
-gpsvalid
+master_plotter-deprecated
 ========
 
 Description
 ^^^^^^^^^^^
 
-Empty
+Plot the NICER data nicely.
