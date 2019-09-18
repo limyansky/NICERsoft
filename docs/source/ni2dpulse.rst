@@ -1,7 +1,7 @@
-ni2dpulse
-========
+ni2dpulse module
+================
 
-Description
-^^^^^^^^^^^
-
-Read event file with PULSE_PHASE and PI columns and make 2-D plot.
+.. automodule:: ni2dpulse
+   :members:
+   :undoc-members:
+   :show-inheritance:

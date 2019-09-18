@@ -1,8 +1,7 @@
-splitevt
-========
+splitevt module
+===============
 
-Description
-^^^^^^^^^^^
-
-Read NICER evt file (often a merged one from many ObsIDs) and split into shorter
-chunks of a specified length.
+.. automodule:: splitevt
+   :members:
+   :undoc-members:
+   :show-inheritance:

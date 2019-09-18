@@ -1,7 +1,7 @@
-add_kp
-======
+add\_kp module
+==============
 
-Description
-^^^^^^^^^^^
-
-Add Kp values as a column to an existing MKF file.
+.. automodule:: add_kp
+   :members:
+   :undoc-members:
+   :show-inheritance:

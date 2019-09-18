@@ -1,7 +1,7 @@
-saa-access
-========
+saa\-access module
+==================
 
-Description
-^^^^^^^^^^^
-
-Empty
+.. automodule:: saa-access
+   :members:
+   :undoc-members:
+   :show-inheritance:

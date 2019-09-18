@@ -1,7 +1,7 @@
-gpsvalid
-========
+gpsvalid module
+===============
 
-Description
-^^^^^^^^^^^
-
-Empty
+.. automodule:: gpsvalid
+   :members:
+   :undoc-members:
+   :show-inheritance:

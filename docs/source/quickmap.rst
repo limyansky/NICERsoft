@@ -1,7 +1,7 @@
-quickmap
-========
+quickmap module
+===============
 
-Description
-^^^^^^^^^^^
-
-Plot points on a map, filtering by tot.gti
+.. automodule:: quickmap
+   :members:
+   :undoc-members:
+   :show-inheritance:

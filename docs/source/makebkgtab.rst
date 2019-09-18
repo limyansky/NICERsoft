@@ -1,8 +1,7 @@
-makebkgtab
-========
+makebkgtab module
+=================
 
-Description
-^^^^^^^^^^^
-
-Write out Tempo2-format PAR files based on Jodrell Crab monthly ephemeris
-parameters.
+.. automodule:: makebkgtab
+   :members:
+   :undoc-members:
+   :show-inheritance:

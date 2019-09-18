@@ -1,8 +1,7 @@
-nitemplate
-========
+nitemplate module
+=================
 
-Description
-^^^^^^^^^^^
-
-Provide a method for interactively fitting an analytic template to photon
-phases.
+.. automodule:: nitemplate
+   :members:
+   :undoc-members:
+   :show-inheritance:

@@ -1,7 +1,7 @@
-plothkmap_multi
-===============
+plothkmap\_multi module
+=======================
 
-Description
-^^^^^^^^^^^
-
-Plot HKP data on map
+.. automodule:: plothkmap_multi
+   :members:
+   :undoc-members:
+   :show-inheritance:

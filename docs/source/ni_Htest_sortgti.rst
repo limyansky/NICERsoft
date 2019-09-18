@@ -1,7 +1,7 @@
-ni_Htest_sortgti
-========
+ni\_Htest\_sortgti module
+=========================
 
-Description
-^^^^^^^^^^^
-
-Read one or more event files to sort GTI by background rate and evaluate H-test.
+.. automodule:: ni_Htest_sortgti
+   :members:
+   :undoc-members:
+   :show-inheritance:

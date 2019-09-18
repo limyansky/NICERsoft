@@ -1,7 +1,7 @@
-plothkmap
-=========
+plothkmap module
+================
 
-Description
-^^^^^^^^^^^
-
-Plot HKP data on map.
+.. automodule:: plothkmap
+   :members:
+   :undoc-members:
+   :show-inheritance:

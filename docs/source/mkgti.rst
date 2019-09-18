@@ -1,7 +1,7 @@
-mkgti
-========
+mkgti module
+============
 
-Description
-^^^^^^^^^^^
-
-Empty
+.. automodule:: mkgti
+   :members:
+   :undoc-members:
+   :show-inheritance:

@@ -1,7 +1,7 @@
-InteractiveLC
-=============
+InteractiveLC module
+====================
 
-Description
-^^^^^^^^^^^
-
-Empty
+.. automodule:: InteractiveLC
+   :members:
+   :undoc-members:
+   :show-inheritance:

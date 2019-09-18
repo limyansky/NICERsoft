@@ -1,7 +1,7 @@
-nioptcuts
-========
+nioptcuts module
+================
 
-Description
-^^^^^^^^^^^
-
-Read event file with phase and optimize cuts.
+.. automodule:: nioptcuts
+   :members:
+   :undoc-members:
+   :show-inheritance:

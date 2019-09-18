@@ -1,7 +1,7 @@
-plotbkgmap
-==========
+plotbkgmap module
+=================
 
-Description
-^^^^^^^^^^^
-
-Plot background info on a map.
+.. automodule:: plotbkgmap
+   :members:
+   :undoc-members:
+   :show-inheritance:

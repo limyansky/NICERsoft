@@ -1,7 +1,7 @@
-bkgpipe
-=======
+bkgpipe module
+==============
 
-Description
-^^^^^^^^^^^
-
-Process NICER background data.  Output will be written in current working directory.
+.. automodule:: bkgpipe
+   :members:
+   :undoc-members:
+   :show-inheritance:

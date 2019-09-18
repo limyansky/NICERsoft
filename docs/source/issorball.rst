@@ -1,7 +1,7 @@
-issorball
-========
+issorball module
+================
 
-Description
-^^^^^^^^^^^
-
-Forecast pulsar visibility for a list of targets
+.. automodule:: issorball
+   :members:
+   :undoc-members:
+   :show-inheritance:

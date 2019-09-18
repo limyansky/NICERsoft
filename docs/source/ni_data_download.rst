@@ -1,8 +1,7 @@
-ni_data_download
-========
+ni\_data\_download module
+=========================
 
-Description
-^^^^^^^^^^^
-
-NICER data downloader. Script written by P. Bult. Minor tweaks by S. Guillot, to
-make it more automatic, and removing multiproccessing (it was causing problems).
+.. automodule:: ni_data_download
+   :members:
+   :undoc-members:
+   :show-inheritance:

@@ -1,7 +1,7 @@
-master_plotter-deprecated
-========
+master\_plotter\-deprecated module
+==================================
 
-Description
-^^^^^^^^^^^
-
-Plot the NICER data nicely.
+.. automodule:: master_plotter-deprecated
+   :members:
+   :undoc-members:
+   :show-inheritance:

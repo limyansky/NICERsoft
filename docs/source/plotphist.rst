@@ -1,7 +1,7 @@
-plotphist
-=========
+plotphist module
+================
 
-Description
-^^^^^^^^^^^
-
-Plot a binned light curve from a PULSE_PHASE column in a FITS file.
+.. automodule:: plotphist
+   :members:
+   :undoc-members:
+   :show-inheritance:

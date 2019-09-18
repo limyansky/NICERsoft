@@ -1,7 +1,7 @@
-fixtemplate
-=======
+fix\_template module
+====================
 
-Description
-^^^^^^^^^^^
-
-Empty
+.. automodule:: fix_template
+   :members:
+   :undoc-members:
+   :show-inheritance:

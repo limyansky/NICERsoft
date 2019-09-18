@@ -1,7 +1,7 @@
-calcrms
-=======
+calcrms module
+==============
 
-Description
-^^^^^^^^^^^
-
-Compute fractional RMS amplitude of a pulsation.
+.. automodule:: calcrms
+   :members:
+   :undoc-members:
+   :show-inheritance:

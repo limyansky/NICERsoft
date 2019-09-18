@@ -1,7 +1,7 @@
-plotsrcbkg
-==========
+plotsrcbkg module
+=================
 
-Description
-^^^^^^^^^^^
-
-Plot source and background spectra.
+.. automodule:: plotsrcbkg
+   :members:
+   :undoc-members:
+   :show-inheritance:

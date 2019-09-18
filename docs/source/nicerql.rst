@@ -1,7 +1,7 @@
-nicerql
-========
+nicerql module
+==============
 
-Description
-^^^^^^^^^^^
-
-Plot the NICER data nicely.
+.. automodule:: nicerql
+   :members:
+   :undoc-members:
+   :show-inheritance:
