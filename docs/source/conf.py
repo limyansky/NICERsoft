@@ -20,8 +20,8 @@ sys.path.insert(0, os.path.abspath('../../scripts'))
 # -- Project information -----------------------------------------------------
 
 project = u'userDocs'
-copyright = u'2019, Brent'
-author = u'Brent'
+copyright = u'2019, Who do I belong to?'
+author = u'NICERsoft Contributors'
 
 # The short X.Y version
 version = u''
@@ -45,6 +45,7 @@ extensions = [
     'sphinx.ext.mathjax',
     'sphinx.ext.viewcode',
     'sphinx.ext.githubpages',
+    'sphinx.ext.napoleon',
 ]
 
 # Add any paths that contain templates here, relative to this directory.
