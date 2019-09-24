@@ -15,6 +15,7 @@ import tempfile
 from nicer.values import *
 from nicer.plotutils import find_hot_detectors
 
+
 def runcmd(cmd):
     """Logs and submits a command to subprocess.check_call"""
 
@@ -23,17 +24,20 @@ def runcmd(cmd):
     log.info(cmd)
     check_call(cmd,env=os.environ)
 
+
 def main():
     """
     Pipeline to process NICER data.
-    
+
     Output will be writtein in current working directory in directories that
     end in '_pipe'.
 
-    Several diagnostic plots are produced, and the following data processing
-    steps are run:
-    * Select good times according to the following:
-      * (ANG_DIST.lt.0.015).and.(ELV>30.0)
+    Note:
+        Several diagnostic plots are produced, and the following data
+        processing
+        steps are run:
+        * Select good times according to the following:
+            * (ANG_DIST.lt.0.015).and.(ELV>30.0)
 
     Parameters:
         indirs: Input directories to process
@@ -51,16 +55,43 @@ def main():
                       (Default is no filter)
         badcut: Select data where bad ratio event rate is below this limit
                 (default: no filter)
+        angdist: Set threshold for ANG_DIST (degrees) in call to nimaketime
+                 (Default is 0.015)
+        obsid: Use this as OBSID for directory and filenames
+        shrinkelvcut: Shrink ELVcut to 20 deg and BR_EARTH cut to 30.0 deg to
+                      to get more data (this is now ignored since it is the
+                      default)
+        dark: Apply SUNSHINE=0 filter to get only data in Earth shadow
+        nounderfilt: Don't filter good times based on UNDERONLY rate
+        minsun: Set minimum sun angle (SUN_ANGLE) for nimaketime filtering
+                (Default is no SUN_ANGLE filtering, typical values are
+                60, 70, 80, 90 deg). Note: Allows dark time at any Sun angle!
+        day: Apply SUNSHINE=1 filter to get only data in ISS-day
+        par: Par file to use for phases
+        ephem: Ephem to use with photonphase (Default is "DE421")
+        outdir: Add name to output directories
+                (by default: directories end in '_pipe')
+        merge: Merge all ObsIDs provided into single event list, lightcurve
+               and spectrum (outputdir called 'merged')
+        crcut: Perform count rate cut on merged event file (only if --merge)
+        lcbinsize: Lightcurve bin size (sec, default is 4.0)
+        filterbinsize: Bin size for Count rate and Overshoot rate filtering
+                       (sec, default=16.0)
+        keith: Standard filters used by Keith Gendreau for Space-Weather
+               backgrounds (Masks detectors 14, 34, 54; cormin 1.5;
+               custom cut on overshoot rate + COR_SAX)
 
-    
+
     """
 
     desc = """
     Pipeline process NICER data.
 
-    Output will be written in current working directory in directories that end in '_pipe'.
+    Output will be written in current working directory in directories that end
+    in '_pipe'.
 
-    Several diagnostic plots are produced, and the following data processing steps are run:
+    Several diagnostic plots are produced, and the following data processing 
+    steps are run:
     * Select good times according to the following:
       * (ANG_DIST.lt.0.015).and.(ELV>30.0)
       * (MODE.eq.1).and.(SUBMODE_AZ.eq.2).and.(SUBMODE_EL.eq.2)
