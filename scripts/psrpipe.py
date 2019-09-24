@@ -16,6 +16,8 @@ from nicer.values import *
 from nicer.plotutils import find_hot_detectors
 
 def runcmd(cmd):
+    """Logs and submits a command to subprocess.check_call"""
+
     # CMD should be a list of strings since it is not processed by a shell
     log.info('CMD: '+" ".join(cmd))
     log.info(cmd)
