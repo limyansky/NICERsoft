@@ -38,9 +38,21 @@ def main():
         steps are run:
         * Select good times according to the following:
             * (ANG_DIST.lt.0.015).and.(ELV>30.0)
+            * (MODE.eq.1).and.(SUBMODE_AZ.eq.2).and.(SUBMODE_EL.eq.2)
+            * SAT_LAT, SAT_LONG not in SAA or polar horn regions specified by
+              region files
+            * If --dark is specified then also filter on SUNSHINE.eq.0
+    Optionally, you can filter on overshoot rate or rate of bad ratio events
+
+    * Select events according to:
+      * EVENT_FLAGS=bx1x000 (SLOW-only or SLOW+FAST events)
+      * PI in the specified range (default is 0.25-12.0 keV)
+      * Remove events from any DET_ID specified by the --mask parameter
 
     Parameters:
         indirs: Input directories to process
+
+    Keyword Arguments:
         emin: Minimum energy to include (Default is 0.25 KeV)
         emax: Maximum Energy to include (Default is 12 KeV)
         mask: Mask these IDS
