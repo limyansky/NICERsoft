@@ -14,6 +14,13 @@ import tempfile
 
 from nicer.values import *
 from nicer.plotutils import find_hot_detectors
+
+def runcmd(cmd):
+    # CMD should be a list of strings since it is not processed by a shell
+    log.info('CMD: '+" ".join(cmd))
+    log.info(cmd)
+    check_call(cmd,env=os.environ)
+
 desc = """
 Pipeline process NICER data.
 
@@ -95,12 +102,6 @@ os.environ["PFILES"] = tempdir+'/pfiles;'+headas+'/syspfiles'
 
 all_evfiles = []
 all_orbfiles = []
-
-def runcmd(cmd):
-    # CMD should be a list of strings since it is not processed by a shell
-    log.info('CMD: '+" ".join(cmd))
-    log.info(cmd)
-    check_call(cmd,env=os.environ)
 
 # Check if outdir contains 'None', 'NONE', or 'none' (causes bug in ni-extractevents)
 if args.outdir:
@@ -560,3 +561,6 @@ else:
     #         runcmd(cmd)
 
 shutil.rmtree(tempdir)
+
+if __name__ == '__main__':
+    main()
