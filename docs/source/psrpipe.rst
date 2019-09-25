@@ -7,8 +7,7 @@ psrpipe module
    :show-inheritance:
 
 .. csv-table:: Additional Information
-   :header: Option, Notes
-   :file: config/file_output.csv
-   :widths: 10,10,80
+   :file: ../config/psrpipe_kwdNotes.csv
+   :widths: 20,80
 
 This is text that comes after the table.
