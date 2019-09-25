@@ -29,7 +29,59 @@ from nicer.NicerFileSet import *
 
 
 def main():
-    parser = argparse.ArgumentParser(description = "Plot the NICER data nicely.")
+    """
+    Plot the NICER data nicely.
+
+    Parameters:
+        infiles: Input files.
+
+    Keyword Arguments:
+        obsdir: Find alllllllll the files!
+        object: Override object name
+        useftools: Use FTOOLS for filter and merge
+        mask: Mask these IDS
+        s OR save: Save plots to file
+        sci: Makes some nice science plots
+        eng: Makes some nice engineering plots
+        bkg: Display background diagnostic plots
+        filtswtrig: Filter SW TRIG events
+        filtovershoot: Filter OVERSHOOT events
+        filtundershoot: Filter UNDERSHOOT event
+        filtratio: Filter PI/PI_FAST ratio using trumpet cut
+        filtall: Filter SWTRIG, UNDERSHOOT and OVERSHOOT events
+        emin: Minimum energy (keV) to keep
+        emax: Minimum energy (keV) to keep (should this read 'maximum?')
+        tskip: Seconds to skip at beginning of data
+        lcbinsize: Light curve bin size (s)
+        filterbinsize: Bin size for Count rate and Overshoot rate filtering (s)
+        pi: Force use of internal PHA to PI conversion
+        basename: Basename for output plots
+        lclog: make light curve log axis
+        foldfreq: Make pulse profile by folding at a fixed freq (Hz)
+        nyquist: Nyquist freq for power spectrum (Hz)
+        map: Creates a map with overshoots and undershoot
+        orb: Path to orbit FITS files
+        par: Path to par file
+        sps: Path to SPS HK file (_apid0260.hk)
+        mkf: Path to MKF file
+        powspec: Display power spectrum (replaces ratio plot)
+        pslog: make power spectrum log axis
+        writeps: write out power spectrum
+        writebkf: Write useful rates for background filtering to FITS file
+        applygti: Read GTI from provided FITS file
+        extraphkshootrate: Compute HK shoot rates from a single MPU
+        eventshootrate: Gets over/undershoot rates from the events
+        interactive: TEST FOR INTERACTIVE LC
+        gtirows: Select GTI rows
+        merge: when using a merged file, the OBSID keyword in header is updated
+               (for plotting purposes)
+        allspec: Makes a figure will a spectrum for each DET_ID
+        alllc: Makes a figure will a lightcurve for each DET_ID
+        keith: Standard filters used by Keith Gendreau for Space-Weather
+               backgrounds
+
+    """
+    parser = argparse.ArgumentParser(description = __doc__)
     parser.add_argument("infiles", help="Input files", nargs='*', default = None)
     parser.add_argument("--obsdir",help = "Find alllllllll the files!", default = None)
     parser.add_argument("--object", help="Override object name", default=None)
