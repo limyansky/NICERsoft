@@ -1,5 +1,25 @@
 ﻿indirs,"These directories are the default data folders downloaded from the web. The script does not work well with .gz files, so if it fails check that."
 emin,"Defaults to 0.25 KeV, but official NICER documentation indicates this may occasionally need to be set as high as 0.5 KeV. of 2"
-emax,Explanation of 3
+emax,Defaults to 12 KeV
 mask,NONE
 filtpolar,"The ""Polar Horns"" appear to be similar to the SAA, though much larger, and are located around the North and South poles. They appear to be varying sources of background, and are highly correlated to some NOAA space weather parameter called ""Kp"". Read more about that here."
+cormin,"Appears related to the nimaketime 'cor_range' parameter. This specifies a magnetic cut-off rigidity (COR), that will help to filter background. Cut-off rigidity is a measure of how well Earth's magnetic field filters charged particles. I need to read more about this (Is bigger better? Smaller?). The most search-able term appears to be ""geomagnetic cutoff rigidity""."
+kpmax,See 'filtpolar'
+minfpm,"FPM stands for ""Focal Plane Module"". These are essentially NICER's pixels that do the detecting of the x-rays. There are 8 of them attached to each MPU, or ""Measurement Power Unit"", for a total of 62."
+maxovershoot,"""Overshoot"" is an electronics term that generally referrs to when some part of a signal exceeds its steady state value. NICER documentation implies that this is related to the deadtime of the detector, and might be caused by a cosmic ray impact. So, I take this to mean ""Filter out times where excessive cosmic ray background causes large amounts of deadtime""."
+badcut,
+angdist,"Related to the nimaketime 'ang_dist' parameter, which determines the maximum distance between NICER's boresight and the target you are trying to observe."
+obsid,"Not sure what this does in practice. Generally, the observations that are downloaded from the web in file folders that are named after the OBSID. Like ""ni_OBSID_0mpu7.evt"" and such."
+shrinkelvcut,Related to nimaketime parameters. 'ELV' Excludes times when the distance to the earth limb is less than some value. The primary reason to use this constraint is to avoid absorption and fluorescence by Earth's atmosphere and optical loading by reflected light. 'BR_EARTH' Excludes times when distance to the bright earth is less than some value. The primary reason to use this constraint is to avoid optical loading by reflected light.I copied a lot of this directly from the nimaketime documentation.
+dark,Not sure what tool takes a SUNSHINE input... But I think this only takes data from ISS-Night. Perhaps related to the discussion in shrinkelvcut.
+nounderfilt,
+minsun,
+day,
+par,"Never tried this, so I don't know if it does anything beyond just calculating photon phases. A .par file is the standard file containing information about pulsar position, frequency, frequency derivative, etc."
+ephem ,"Ephemerous. Contains information relating to where planets are, conceivably for use with the .par file mentioned above."
+outdir ,
+merge,Puts all of the observations into a single file.
+crcut,
+lcbinsize,Counts vs Time plots are generated as diagnostics at various steps in this script.
+filterbinsize,"What does this do? Conceivably, checks count/overshoot rate each 16 seconds, and determines if that data should be included."
+keith,
