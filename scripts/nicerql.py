@@ -40,7 +40,7 @@ def main():
         object: Override object name
         useftools: Use FTOOLS for filter and merge
         mask: Mask these IDS
-        s OR save: Save plots to file
+        s save: Save plots to file
         sci: Makes some nice science plots
         eng: Makes some nice engineering plots
         bkg: Display background diagnostic plots

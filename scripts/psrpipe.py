@@ -42,12 +42,12 @@ def main():
             * SAT_LAT, SAT_LONG not in SAA or polar horn regions specified by
               region files
             * If --dark is specified then also filter on SUNSHINE.eq.0
-    Optionally, you can filter on overshoot rate or rate of bad ratio events
+        Optionally, you can filter on overshoot rate or rate of bad ratio events
 
-    * Select events according to:
-      * EVENT_FLAGS=bx1x000 (SLOW-only or SLOW+FAST events)
-      * PI in the specified range (default is 0.25-12.0 keV)
-      * Remove events from any DET_ID specified by the --mask parameter
+        * Select events according to:
+          * EVENT_FLAGS=bx1x000 (SLOW-only or SLOW+FAST events)
+          * PI in the specified range (default is 0.25-12.0 keV)
+          * Remove events from any DET_ID specified by the --mask parameter
 
     Parameters:
         indirs: Input directories to process
@@ -138,8 +138,8 @@ def main():
         default=None)
     parser.add_argument("--shrinkelvcut", help="Shrink ELV cut to 20 deg and BR_EARTH cut to 30.0 deg to get more data (this is now ignored since it is the default)", action='store_true')
     parser.add_argument("--dark", help="Apply SUNSHINE=0 filter to get only data in Earth shadow", action='store_true')
-parser.add_argument("--nounderfilt", help="Don't filter good times based on UNDERONLY rate", action='store_true')
-parser.add_argument("--minsun",help="Set minimum sun angle (SUN_ANGLE) for nimaketime filtering (default=no SUN_ANGLE filtering, typical values = 60, 70, 80, 90 deg). Note: Allows dark time at any Sun angle!",default=None)
+    parser.add_argument("--nounderfilt", help="Don't filter good times based on UNDERONLY rate", action='store_true')
+    parser.add_argument("--minsun",help="Set minimum sun angle (SUN_ANGLE) for nimaketime filtering (default=no SUN_ANGLE filtering, typical values = 60, 70, 80, 90 deg). Note: Allows dark time at any Sun angle!",default=None)
     parser.add_argument("--day", help="Apply SUNSHINE=1 filter to get only data in ISS-day", action='store_true')
     parser.add_argument("--par", help="Par file to use for phases")
     parser.add_argument("--ephem", help="Ephem to use with photonphase", default="DE421")
@@ -463,9 +463,9 @@ parser.add_argument("--minsun",help="Set minimum sun angle (SUN_ANGLE) for nimak
     #        # Keith suggests that these cuts can give more data without hurting data quality
     #        elvcut = 20.0
     #        brcut = 30.0
-    maxunder = 200.0
-    if args.nounderfilt:
-        maxunder=650.0
+        maxunder = 200.0
+        if args.nounderfilt:
+            maxunder=650.0
         cmd = ["nimaketime",  "infile={0}".format(mkfile),
             'outfile={0}'.format(gtiname_merged), 'nicersaafilt=YES',
             'saafilt=NO', 'trackfilt=YES', 'ang_dist={0:.3f}'.format(args.angdist), 'elv={0}'.format(elvcut),
