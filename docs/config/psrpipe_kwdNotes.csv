@@ -1,3 +1,5 @@
-﻿option1,Explanation of 1
-option2,Explanation of 2
-option3,Explanation of 3
+﻿indirs,"These directories are the default data folders downloaded from the web. The script does not work well with .gz files, so if it fails check that."
+emin,"Defaults to 0.25 KeV, but official NICER documentation indicates this may occasionally need to be set as high as 0.5 KeV. of 2"
+emax,Explanation of 3
+mask,NONE
+filtpolar,"The ""Polar Horns"" appear to be similar to the SAA, though much larger, and are located around the North and South poles. They appear to be varying sources of background, and are highly correlated to some NOAA space weather parameter called ""Kp"". Read more about that here."
