@@ -365,7 +365,7 @@ def choose_N(orig_N):
     else: return new_N
 
 def plot_fft_of_power(etable,nyquist, pslog, writeps):
-    'plots the power spectrum'
+    """plots the power spectrum"""
 
     dt = 0.5/nyquist
     METmin = etable['MET'].min()
@@ -401,7 +401,7 @@ def plot_fft_of_power(etable,nyquist, pslog, writeps):
     return
 #-------------------------------THIS PLOTS THE DEADTIME HISTOGRAM------------------
 def plot_deadtime(etable):
-    'Plot histogram of detector deadtime in microseconds.'
+    """Plot histogram of detector deadtime in microseconds."""
     us = etable['DEADTIME']*1.0e6
     # Bin at 1 us resolution
     max = np.floor(us.max())+1
@@ -505,7 +505,7 @@ def apply_gti(etable, gtitable):
     return vstack(goodlist,metadata_conflicts='silent')
 
 def convert_from_elapsed_goodtime(elapsedstarts, elapsedstops, gtitable):
-    'Given a set of elapsed time starts and stops will convert to MET'
+    """Given a set of elapsed time starts and stops will convert to MET"""
     startmets = np.array([])
     stopmets = np.array([])
     for timex in xrange(0,len(elapsedstarts)):
@@ -525,7 +525,7 @@ def convert_from_elapsed_goodtime(elapsedstarts, elapsedstops, gtitable):
     return startmets, stopmets
 
 def convert_to_elapsed_goodtime(mets, vals, gtitable):
-    'Given a set of values at METs, extract the values during the GTIs and return times that are in elapsed good time for plotting'
+    """Given a set of values at METs, extract the values during the GTIs and return times that are in elapsed good time for plotting"""
     mets = np.asarray(mets)
     vals = np.asarray(vals)
     idx = np.where(np.logical_and(mets>gtitable['START'][0],mets<gtitable['STOP'][0]))
@@ -703,7 +703,7 @@ def plot_cor(mktable, gtitable):
 #-------------------------THIS PLOTS USEFUL TEXT AT THE TOP OF THE SUPLOT-------
 # def calc_nresets(etable, IDS):
 def calc_nresets(mktable, IDS):
-    'Count resets (detector undershoots) for each detector, from the mktable'
+    """Count resets (detector undershoots) for each detector, from the mktable"""
 
     nresets = np.zeros_like(IDS)
 
@@ -723,7 +723,7 @@ def calc_nresets(mktable, IDS):
     return nresets
 
 def plot_resetrate(IDS, reset_rates):
-    'Plots reset rates'
+    """Plots reset rates"""
     reset = plot.bar(IDS, reset_rates, width = .85)
     plot.title('Reset Rate by Detector')
     plot.ylabel('Reset Rate [Hz]')
