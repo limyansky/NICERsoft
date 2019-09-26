@@ -23,7 +23,8 @@ except NameError:
 
 #------------------------THIS MAKES THE TOTAL COUNT HISTOGRAM---------------------------
 def event_counter(etable):
-    'Count events by DET_ID'
+    """ Count events by DET_ID"""
+
     IDevents = np.zeros_like(IDS)
 
     for i, det_id in enumerate(IDS):
@@ -44,7 +45,8 @@ def find_hot_detectors(etable):
     return None
 
 def hist_use(etable):
-    'Creates array of event count per ID and colors hot detectors red'
+    """Creates array of event count per ID and colors hot detectors red"""
+
     # Make array of event counts by DET_ID
     IDevents = event_counter(etable)
     colors = np.array(['k']*len(IDevents))
@@ -70,7 +72,7 @@ def hist_use(etable):
 
 
 def plot_total_count_hist(etable, ax_rate, ax_counts):
-    'Plots event count per ID as a histogram with event count and countrate on y axes'
+    """Plots event count per ID as a histogram with event count and countrate on y axes"""
 
     num_events, colors = hist_use(etable)
 
@@ -91,7 +93,7 @@ def plot_total_count_hist(etable, ax_rate, ax_counts):
 
 #----------------------THIS MAKES THE GRAYSCALE ID/EVENT COUNT CHART---------------------
 def structure(etable, num_events):
-    'Creates a grid where the xy pair corresponds to RAWX,RAWY and value at each entry is event count'
+    """Creates a grid where the xy pair corresponds to RAWX,RAWY and value at each entry is event count"""
     rawx = np.zeros_like(IDS,dtype=np.int)
     rawy = np.zeros_like(IDS,dtype=np.int)
 
@@ -117,7 +119,7 @@ def structure(etable, num_events):
     return structure
 
 def plot_detector_chart(etable, num_events,  ax_map):
-    'Plots the structure created in structure() above as a grayscale grid'
+    """Plots the structure created in structure() above as a grayscale grid"""
     #WANT TO GET THE ORIGIN IN THE TOP RIGHT HAND CORNER
     struct = structure(etable, num_events)
     #plot.style.use('grayscale')
@@ -134,7 +136,7 @@ def plot_detector_chart(etable, num_events,  ax_map):
 
 #----------------------THIS MAKES THE LIGHT CURVE---------------------------
 def light_curve(etable, startmet, stopmet, binsize):
-    'Bins events as a histogram to be plotted as the light curve. returns bins and the histogram'
+    """Bins events as a histogram to be plotted as the light curve. returns bins and the histogram"""
     if startmet is None and stopmet is None:
         startmet = etable['MET'][0]
         t = etable['MET'] - startmet
@@ -210,7 +212,7 @@ def plot_light_curve(etable, lclog, gtitable, binsize=1.0, noplot=False, plot_po
 
 #-------------------------------THIS PLOTS THE FAST TO SLOW___------------------
 def plot_slowfast(etable,args):
-    'Scatter plot of PI and fast PHA, highlighting points above ratio cut'
+    """Scatter plot of PI and fast PHA, highlighting points above ratio cut"""
     log.info('Counting slow and fast')
    # First do some counts
     nfastonly = np.count_nonzero(np.logical_and(etable['EVENT_FLAGS'][:,FLAG_FAST],
@@ -270,7 +272,7 @@ def plot_slowfast(etable,args):
 
 #-------------------------------THIS PLOTS THE ENERGY SPECTRUM------------------
 def calc_pi(etable, calfile):
-    'Compute PI from PHA (slow) using approximate linear calibration'
+    """Compute PI from PHA (slow) using approximate linear calibration"""
 
     # Load calibration file
     det_ids, e0s, gains = np.loadtxt(calfile,unpack=True)
@@ -286,7 +288,7 @@ def calc_pi(etable, calfile):
     return pi
 
 def plot_energy_spec(etable,binscale=1.0,plot_pos=None):
-    'plots the energy spectrum of PI'
+    """plots the energy spectrum of PI"""
     bb = np.concatenate((np.arange(0.0,2.0,0.02*binscale),np.arange(2.0,15.0,0.1*binscale)))
     hh, hh_bins = np.histogram(etable['PI']*PI_TO_KEV, bins=bb)
     widths = bb[1:] - bb[:-1]
