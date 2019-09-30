@@ -592,6 +592,11 @@ def plot_SAA(mktable, gtitable):
 #-------------------------UNDERSHOOT RATE FOR RATIO------------------------------
 #def plot_undershoot(etable, undershootrate, gtitable, args, hkmet, mktable):
 def plot_undershoot(mktable, gtitable, args):
+    """
+    Plots the total count rate of over counts via multiplying the
+    'NUM_FPM_ON' and 'FPM_OVERONLY_COUNT' columns of the provided .mkf file.
+
+    """
 
     #etime, undershoot, cc = convert_to_elapsed_goodtime(hkmet, undershootrate, gtitable)
     etime, undershoot, cc = convert_to_elapsed_goodtime(mktable['TIME'], mktable['NUM_FPM_ON']*mktable['FPM_UNDERONLY_COUNT'], gtitable)
