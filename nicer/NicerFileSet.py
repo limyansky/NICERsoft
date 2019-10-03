@@ -15,6 +15,22 @@ from nicer.latloninterp import LatLonInterp
 import sys, os
 
 class NicerFileSet:
+    """Loads NICER data into a format usable by python
+
+    Attributes:
+        evfiles: Path to ni*mpu7_cl.evt (Cleaned, merged event file)
+        ufafiles: Path to ni*mpu7_ufa.evt (Unfiltered, merged event file)
+        uffiles: Path to raw unfiltered event files
+        hkfiles: Path to mpu housekeeping files
+        mkfile: Path to filter (.mkf) file
+        mktable: Table from HDU 1 of mkfile
+        llinterp: Lat/Lon Interpolator
+        gtitable: Table of good time intervals (minimum of 16 seconds, unless 
+                   using 'keith')
+        etable: Table of HDU 1 of ufafiles, all concatinated together
+
+
+    """
     def __init__(self, args):
         log.info('Initializing the data object')
         self.args = args
@@ -117,6 +133,11 @@ class NicerFileSet:
         # self.reset_rates = None
 
     def createetable(self):
+        """Populates attribute etable
+
+        Concatinates HDU 1 of self.ufafiles, then stores this in self.etable
+        """
+
         log.info('Reading files')
         tlist = []
         for fn in self.ufafiles:
@@ -350,6 +371,11 @@ class NicerFileSet:
         return
 
     def getgti(self):
+        """Populates attribute gtitable
+
+        Stors a table of good time intervals in self.gtittable. The minimum
+        length of time for a GTI is 16 seconds, unless 'keith' is true.
+        """
             # Read the GTIs from the first event FITS file
         self.gtitable = Table.read(self.ufafiles[0],hdu=2)
         if 'TIMEZERO' in self.gtitable.meta:
