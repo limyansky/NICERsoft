@@ -28,10 +28,13 @@ class NicerFileSet:
         gtitable: Table of good time intervals (minimum of 16 seconds, unless 
                    using 'keith')
         etable: Table of HDU 1 of ufafiles, all concatinated together
+        ovbintable: Lightcuve of overshoots
 
 
     """
     def __init__(self, args):
+        """Populates attributes from inputted arguments.
+        """
         log.info('Initializing the data object')
         self.args = args
 
@@ -159,6 +162,13 @@ class NicerFileSet:
         return self.etable
 
     def sortmet(self):
+        """Update exposure and 'TIME' column in etable, then sorts by MET.
+
+        Changes the 'TIME' column name in etable to 'MET', as this is more
+        representative. Updates 'EXPOSURE' to be the sum of GTI durations.
+        Sorts etable by 'MET'.
+
+        """
         # Change TIME column name to MET to reflect what it really is
         self.etable.columns['TIME'].name = 'MET'
         # Update exposure to be sum of GTI durations
@@ -177,6 +187,10 @@ class NicerFileSet:
             self.etable.meta['OBJECT'] = self.args.object
 
     def getbinnedovershoots(self):
+        """Populates ovbintable attribute
+        
+        Makes lightcurve of FPM_OVERONLY_COUNT from mktable, using fcurve.
+        """
         if self.basename.split('_')[-1] == 'prefilt':
             ## STEP 1 -- Make lightcurve of FPM_OVERONLY_COUNT from mktable, using fcurve
             self.ovbinfile = '{}_ovbin.fits'.format(self.basename)
@@ -397,6 +411,11 @@ class NicerFileSet:
         print(self.gtitable)
 
     def makebasename(self):
+        """Populates attribute basename
+
+        self.basename is either pulled from the arguments (if it exists), or
+        from the path to self.evfiles.
+        """
         bn = path.basename(self.evfiles[0]).split('_')[0]
         log.info('OBS_ID {0}'.format(self.etable.meta['OBS_ID']))
         if self.etable.meta['OBS_ID'].startswith('000000'):
