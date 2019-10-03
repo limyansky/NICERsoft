@@ -25,7 +25,7 @@ class NicerFileSet:
         mkfile: Path to filter (.mkf) file
         mktable: Table from HDU 1 of mkfile
         llinterp: Lat/Lon Interpolator
-        gtitable: Table of good time intervals (minimum of 16 seconds, unless 
+        gtitable: Table of good time intervals (minimum of 16 seconds, unless
                    using 'keith')
         etable: Table of HDU 1 of ufafiles, all concatinated together
         ovbintable: Lightcuve of overshoots
