@@ -19,37 +19,214 @@ from pint.fits_utils import read_fits_event_mjds
 from pint.eventstats import h2sig,hm
 import argparse
 
-desc= """
-Read one or more event files 
-to sort GTI by background rate 
-and evaluate H-test
-"""
 
-plt.rc('font', size=14)          # controls default text sizes
-plt.rc('axes', labelsize=13)    # fontsize of the x and y labels
-plt.rc('xtick', labelsize=13)    # fontsize of the tick labels
-plt.rc('ytick', labelsize=13)    # fontsize of the tick labels
-plt.rc('legend', fontsize=14)    # legend fontsize
-plt.rc('axes', linewidth=1.5)
-plt.rc('xtick.major', size=4, width=1.5)
-plt.rc('ytick.major', size=4, width=1.5)
+def main():
+    """
+    Read one or more event files 
+    to sort GTI by background rate 
+    and evaluate H-test
 
+    Parameters:
+        infile: file or text file with list of event file
+        outfile: name for output files
 
-parser = argparse.ArgumentParser(description = desc)
-#parser.add_argument("evt", help="Input event files using glob.glob (e.g.'10010101*_Proc/cleanfilt_par.evt')")
-parser.add_argument("infile", help="file or text file with list of event file", nargs='+')
-parser.add_argument("outfile", help="name for output files")
-parser.add_argument("--emin", help="Minimum energy to include (keV, default=0.25)", type=float, default=0.25)
-parser.add_argument("--emax", help="Maximum energy to include (keV, default=2.00)", type=float, default=2.00)
-parser.add_argument("--gridsearch", help="Search over energies to find max H-test", action="store_true",default=False)
-parser.add_argument("--coarsegridsearch", help="Search over energies to find max H-test", action="store_true",default=False)
-parser.add_argument("--savefile", help="Saving optimized event file", action="store_true",default=False)
-parser.add_argument("--nbins", help="Number of bins for plotting pulse profile (default=16)", type=int, default=16)
-parser.add_argument("--name", help="Pulsar name for output figure", type=str, default='')
-args = parser.parse_args()
+    Keyword Arguments:
+        emin: Minimum energy to include (keV, default=0.25)
+        emax: Maximum energy to include (keV, default=2.00)
+        gridsearch: Search over energies to find max H-test
+        coarsegridsearch: Search over energies to find max H-test
+        savefile: Saving optimized event file
+        nbins: Number of bins for plotting pulse profile (default=16)
+        name: Pulsar name for output figure
+    """
+
+    plt.rc('font', size=14)          # controls default text sizes
+    plt.rc('axes', labelsize=13)    # fontsize of the x and y labels
+    plt.rc('xtick', labelsize=13)    # fontsize of the tick labels
+    plt.rc('ytick', labelsize=13)    # fontsize of the tick labels
+    plt.rc('legend', fontsize=14)    # legend fontsize
+    plt.rc('axes', linewidth=1.5)
+    plt.rc('xtick.major', size=4, width=1.5)
+    plt.rc('ytick.major', size=4, width=1.5)
+
+    parser = argparse.ArgumentParser(description = __doc__)
+    #parser.add_argument("evt", help="Input event files using glob.glob (e.g.'10010101*_Proc/cleanfilt_par.evt')")
+    parser.add_argument("infile", help="file or text file with list of event file", nargs='+')
+    parser.add_argument("outfile", help="name for output files")
+    parser.add_argument("--emin", help="Minimum energy to include (keV, default=0.25)", type=float, default=0.25)
+    parser.add_argument("--emax", help="Maximum energy to include (keV, default=2.00)", type=float, default=2.00)
+    parser.add_argument("--gridsearch", help="Search over energies to find max H-test", action="store_true",default=False)
+    parser.add_argument("--coarsegridsearch", help="Search over energies to find max H-test", action="store_true",default=False)
+    parser.add_argument("--savefile", help="Saving optimized event file", action="store_true",default=False)
+    parser.add_argument("--nbins", help="Number of bins for plotting pulse profile (default=16)", type=int, default=16)
+    parser.add_argument("--name", help="Pulsar name for output figure", type=str, default='')
+    args = parser.parse_args()
+
+    if len(args.infile)==1:
+        if args.infile[0].startswith('@'):
+            inputfile = args.infile[0].split('@')[1]
+            log.info('Reading input ObsID list: {}'.format(inputfile))
+            all_files = np.loadtxt(inputfile,dtype=str)
+        else:
+            all_files = args.infile
+    else:
+        all_files = args.infile
+
+    data = load_files(all_files)
+    data_diced = dice_gtis(data)
+    #get_optimal_cuts(data_diced)
+
+    if args.gridsearch:
+        all_emin = np.arange(0.24,1.0,0.01)
+    elif args.coarsegridsearch:
+        all_emin = np.arange(0.3,2.0,0.1)
+    else:
+        all_emin = np.array([args.emin])
+
+    hbest = 0.0
+    eminbest = 0.0
+    emaxbest = 100.0
+
+    eminlist = []
+    emaxlist = []
+    hgrid = []
+        
+    for emin in all_emin:
+        
+        if args.gridsearch:
+            all_emax = np.arange(1.0,3.0,0.01)
+        elif args.coarsegridsearch:
+            all_emax = np.arange(emin+0.1,7.0,0.2)
+        else:
+            all_emax = np.array([args.emax])
+
+        for emax in all_emax:
+
+            print("Energy range: {:0.2f}-{:0.2f} keV".format(emin,emax))
+            
+            pi_mask = (data[2]>emin*KEV_TO_PI) & (data[2]<emax*KEV_TO_PI)
+            pred_rate = 0.05/10.0 # 2241
+            sn,sn0,hs,ph_gti,gti_rts_s,gti_len_s = make_sn(data_diced,mask=pi_mask,rate=pred_rate)
+            
+            hsig = [h2sig(h) for h in hs]
+            exposure = np.cumsum(gti_len_s)
+            
+            plt.figure(5); plt.clf()
+            # scale exposure to the expected S/N
+            amax = np.argmax(sn)
+            exposure_scale = sn[amax]/exposure[amax]**0.5
+
+            Hmax = np.argmax(hsig)
+            
+            if not args.gridsearch and not args.coarsegridsearch:
+                #plt.plot(gti_rts_s,exposure**0.5*exposure_scale,label='scaled exposure')
+                #plt.plot(gti_rts_s,sn,label='predicted S/N')
+                plt.plot(gti_rts_s,hsig,label='H-test significance')
+                plt.axvline(gti_rts_s[amax],color='k',ls='--')
+                plt.axvline(gti_rts_s[Hmax],color='r',ls='--')
+                plt.xlabel('Background Rate (ct/s)')
+                plt.ylabel('Significance (sigma)')
+                plt.title('{} - [{},{}]'.format(args.name,emin,emax))
+                plt.legend(loc='lower right')
+                plt.savefig('{}_sig.png'.format(args.outfile))
+                
+                plt.clf()
+                nbins=args.nbins
+                select_ph = np.concatenate(ph_gti[:Hmax]).ravel()
+                profbins = np.linspace(0.0,1.0,nbins+1,endpoint=True)
+                profile, edges = np.histogram(select_ph,bins=profbins)
+                bbins = np.concatenate((profbins, profbins[1:]+1.0, profbins[1:]+2.0))
+                fullprof = np.concatenate((profile,profile,profile,np.array([profile[0]])))
+                plt.errorbar(bbins-(0.5/nbins),fullprof,
+                             yerr=fullprof**0.5,
+                             marker ='',
+                             drawstyle='steps-mid',
+                             linewidth=1.5,
+                             color='k'
+                )
+                #plt.subplots_adjust(left=0.15, right=0.93)  #, bottom=0.1)
+                plt.xlim((0.0,2.0))
+                plt.ylabel('Photons')
+                plt.xlabel('Phase')
+                plt.title(args.name)
+                plt.savefig('{}_profile.png'.format(args.outfile))
+                plt.clf()
+                
+            else:
+                eminlist.append(emin)
+                emaxlist.append(emax)
+                hgrid.append(hsig[Hmax])
+                if hsig[Hmax]>=hbest:
+                    hbest=hsig[Hmax]
+                    eminbest=emin
+                    emaxbest=emax
+
+    if args.gridsearch or args.coarsegridsearch:
+
+        pi_mask = (data[2]>eminbest*KEV_TO_PI) & (data[2]<emaxbest*KEV_TO_PI)
+        pred_rate = 0.05/10.0 # 2241
+        sn,sn0,hs,ph_gti,gti_rts_s,gti_len_s = make_sn(data_diced,mask=pi_mask,rate=pred_rate)
+        hsig = [h2sig(h) for h in hs]
+        exposure = np.cumsum(gti_len_s)
+        
+        plt.figure(5); plt.clf()
+        # scale exposure to the expected S/N
+        amax = np.argmax(sn)
+        exposure_scale = sn[amax]/exposure[amax]**0.5
+        
+        Hmax = np.argmax(hsig)
+
+        plt.plot(gti_rts_s,hsig,label='H-test significance')
+        plt.axvline(gti_rts_s[amax],color='k',ls='--')
+        plt.axvline(gti_rts_s[Hmax],color='r',ls='--')
+        plt.xlabel('Background Rate (ct/s)')
+        plt.ylabel('Significance (sigma)')
+        plt.title('{} - [{},{}]'.format(args.name,eminbest,emaxbest))
+        plt.legend(loc='lower right')
+        plt.savefig('{}_sig_bestrange.png'.format(args.outfile))
+
+        plt.clf()
+        plt.scatter(eminlist,emaxlist, c=hgrid, s=10, edgecolor='')
+        cbar = plt.colorbar()
+        cbar.set_label('H-test')
+        plt.xlabel('Low Energy Cut (keV)')
+        plt.ylabel('High Energy Cut (keV)')
+        plt.savefig('{}_grid.png'.format(args.outfile))
+        plt.clf()
+        
+        nbins=args.nbins
+        select_ph = np.concatenate(ph_gti[:Hmax]).ravel()
+        profbins = np.linspace(0.0,1.0,nbins+1,endpoint=True)
+        profile, edges = np.histogram(select_ph,bins=profbins)
+        bbins = np.concatenate((profbins, profbins[1:]+1.0, profbins[1:]+2.0))
+        fullprof = np.concatenate((profile,profile,profile,np.array([profile[0]])))
+        plt.errorbar(bbins-(0.5/nbins),fullprof,
+                     yerr=fullprof**0.5,
+                     marker ='',
+                     drawstyle='steps-mid',
+                     linewidth=1.5,
+                     color='k'
+        )
+        
+        plt.xlim((0.0,2.0))
+        plt.ylabel('Photons')
+        plt.xlabel('Phase')
+        plt.title(args.name)
+        plt.savefig('{}_profile.png'.format(args.outfile))
+
+        print("Maximum significance: {:0.3f} sigma".format(hsig[Hmax]))
+        print("Maximum significance: {:0.3f} sigma".format(hbest))
+        print("   obtained in {:0.3f} ksec".format(exposure[Hmax]))
+        print("   for {} events".format(len(select_ph)))
+        
+    else:
+        
+        print("Maximum significance: {:0.3f} sigma".format(hsig[Hmax]))
+        print("   obtained in {:0.3f} ksec".format(exposure[Hmax]))
+        print("   for {} events".format(len(select_ph)))
 
 def load_files(fnames):
-    # make a comprehensive list of gtis/rates
+    """make a comprehensive list of gtis/rates"""
     
     gtis = deque()
     times = deque()
@@ -211,166 +388,5 @@ def get_optimal_cuts(data,pred_rate = 0.017):
     print('H-test joint: %.2f'%hm(np.append(ph1,ph2)))
 
 
-
-if len(args.infile)==1:
-    if args.infile[0].startswith('@'):
-        inputfile = args.infile[0].split('@')[1]
-        log.info('Reading input ObsID list: {}'.format(inputfile))
-        all_files = np.loadtxt(inputfile,dtype=str)
-    else:
-        all_files = args.infile
-else:
-    all_files = args.infile
-
-data = load_files(all_files)
-data_diced = dice_gtis(data)
-#get_optimal_cuts(data_diced)
-
-if args.gridsearch:
-    all_emin = np.arange(0.24,1.0,0.01)
-elif args.coarsegridsearch:
-    all_emin = np.arange(0.3,2.0,0.1)
-else:
-    all_emin = np.array([args.emin])
-
-hbest = 0.0
-eminbest = 0.0
-emaxbest = 100.0
-
-eminlist = []
-emaxlist = []
-hgrid = []
-    
-for emin in all_emin:
-    
-    if args.gridsearch:
-        all_emax = np.arange(1.0,3.0,0.01)
-    elif args.coarsegridsearch:
-        all_emax = np.arange(emin+0.1,7.0,0.2)
-    else:
-        all_emax = np.array([args.emax])
-
-    for emax in all_emax:
-
-        print("Energy range: {:0.2f}-{:0.2f} keV".format(emin,emax))
-        
-        pi_mask = (data[2]>emin*KEV_TO_PI) & (data[2]<emax*KEV_TO_PI)
-        pred_rate = 0.05/10.0 # 2241
-        sn,sn0,hs,ph_gti,gti_rts_s,gti_len_s = make_sn(data_diced,mask=pi_mask,rate=pred_rate)
-        
-        hsig = [h2sig(h) for h in hs]
-        exposure = np.cumsum(gti_len_s)
-        
-        plt.figure(5); plt.clf()
-        # scale exposure to the expected S/N
-        amax = np.argmax(sn)
-        exposure_scale = sn[amax]/exposure[amax]**0.5
-
-        Hmax = np.argmax(hsig)
-        
-        if not args.gridsearch and not args.coarsegridsearch:
-            #plt.plot(gti_rts_s,exposure**0.5*exposure_scale,label='scaled exposure')
-            #plt.plot(gti_rts_s,sn,label='predicted S/N')
-            plt.plot(gti_rts_s,hsig,label='H-test significance')
-            plt.axvline(gti_rts_s[amax],color='k',ls='--')
-            plt.axvline(gti_rts_s[Hmax],color='r',ls='--')
-            plt.xlabel('Background Rate (ct/s)')
-            plt.ylabel('Significance (sigma)')
-            plt.title('{} - [{},{}]'.format(args.name,emin,emax))
-            plt.legend(loc='lower right')
-            plt.savefig('{}_sig.png'.format(args.outfile))
-            
-            plt.clf()
-            nbins=args.nbins
-            select_ph = np.concatenate(ph_gti[:Hmax]).ravel()
-            profbins = np.linspace(0.0,1.0,nbins+1,endpoint=True)
-            profile, edges = np.histogram(select_ph,bins=profbins)
-            bbins = np.concatenate((profbins, profbins[1:]+1.0, profbins[1:]+2.0))
-            fullprof = np.concatenate((profile,profile,profile,np.array([profile[0]])))
-            plt.errorbar(bbins-(0.5/nbins),fullprof,
-                         yerr=fullprof**0.5,
-                         marker ='',
-                         drawstyle='steps-mid',
-                         linewidth=1.5,
-                         color='k'
-            )
-            #plt.subplots_adjust(left=0.15, right=0.93)  #, bottom=0.1)
-            plt.xlim((0.0,2.0))
-            plt.ylabel('Photons')
-            plt.xlabel('Phase')
-            plt.title(args.name)
-            plt.savefig('{}_profile.png'.format(args.outfile))
-            plt.clf()
-            
-        else:
-            eminlist.append(emin)
-            emaxlist.append(emax)
-            hgrid.append(hsig[Hmax])
-            if hsig[Hmax]>=hbest:
-                hbest=hsig[Hmax]
-                eminbest=emin
-                emaxbest=emax
-
-if args.gridsearch or args.coarsegridsearch:
-
-    pi_mask = (data[2]>eminbest*KEV_TO_PI) & (data[2]<emaxbest*KEV_TO_PI)
-    pred_rate = 0.05/10.0 # 2241
-    sn,sn0,hs,ph_gti,gti_rts_s,gti_len_s = make_sn(data_diced,mask=pi_mask,rate=pred_rate)
-    hsig = [h2sig(h) for h in hs]
-    exposure = np.cumsum(gti_len_s)
-    
-    plt.figure(5); plt.clf()
-    # scale exposure to the expected S/N
-    amax = np.argmax(sn)
-    exposure_scale = sn[amax]/exposure[amax]**0.5
-    
-    Hmax = np.argmax(hsig)
-
-    plt.plot(gti_rts_s,hsig,label='H-test significance')
-    plt.axvline(gti_rts_s[amax],color='k',ls='--')
-    plt.axvline(gti_rts_s[Hmax],color='r',ls='--')
-    plt.xlabel('Background Rate (ct/s)')
-    plt.ylabel('Significance (sigma)')
-    plt.title('{} - [{},{}]'.format(args.name,eminbest,emaxbest))
-    plt.legend(loc='lower right')
-    plt.savefig('{}_sig_bestrange.png'.format(args.outfile))
-
-    plt.clf()
-    plt.scatter(eminlist,emaxlist, c=hgrid, s=10, edgecolor='')
-    cbar = plt.colorbar()
-    cbar.set_label('H-test')
-    plt.xlabel('Low Energy Cut (keV)')
-    plt.ylabel('High Energy Cut (keV)')
-    plt.savefig('{}_grid.png'.format(args.outfile))
-    plt.clf()
-    
-    nbins=args.nbins
-    select_ph = np.concatenate(ph_gti[:Hmax]).ravel()
-    profbins = np.linspace(0.0,1.0,nbins+1,endpoint=True)
-    profile, edges = np.histogram(select_ph,bins=profbins)
-    bbins = np.concatenate((profbins, profbins[1:]+1.0, profbins[1:]+2.0))
-    fullprof = np.concatenate((profile,profile,profile,np.array([profile[0]])))
-    plt.errorbar(bbins-(0.5/nbins),fullprof,
-                 yerr=fullprof**0.5,
-                 marker ='',
-                 drawstyle='steps-mid',
-                 linewidth=1.5,
-                 color='k'
-    )
-    
-    plt.xlim((0.0,2.0))
-    plt.ylabel('Photons')
-    plt.xlabel('Phase')
-    plt.title(args.name)
-    plt.savefig('{}_profile.png'.format(args.outfile))
-
-    print("Maximum significance: {:0.3f} sigma".format(hsig[Hmax]))
-    print("Maximum significance: {:0.3f} sigma".format(hbest))
-    print("   obtained in {:0.3f} ksec".format(exposure[Hmax]))
-    print("   for {} events".format(len(select_ph)))
-    
-else:
-    
-    print("Maximum significance: {:0.3f} sigma".format(hsig[Hmax]))
-    print("   obtained in {:0.3f} ksec".format(exposure[Hmax]))
-    print("   for {} events".format(len(select_ph)))
+if __name__ == '__main__':
+    main()
